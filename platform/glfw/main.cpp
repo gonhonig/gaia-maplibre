@@ -35,6 +35,18 @@ void quit_handler(int) {
     }
 }
 
+std::string load_file(const std::string& filename) {
+    std::stringstream ss;
+    std::ifstream stream(filename);
+    std::string line;
+
+    while (std::getline(stream, line)) {
+        ss << line;
+    }
+
+    return ss.str();
+}
+
 int main(int argc, char* argv[]) {
     args::ArgumentParser argumentParser("MapLibre Native GLFW example");
     args::HelpFlag helpFlag(argumentParser, "help", "Display this help menu", {'h', "help"});
@@ -217,7 +229,9 @@ int main(int argc, char* argv[]) {
         }
     }
 
-    map.getStyle().loadURL(style);
+    std::string arcgis = "https://raw.githubusercontent.com/go2garret/maps/main/src/assets/json/arcgis_hybrid.json";
+    std::string osmap = "https://raw.githubusercontent.com/go2garret/maps/main/src/assets/json/openStreetMap.json";
+    map.getStyle().loadJSON(load_file("/Users/gonhonig/Projects/gaia-maplibre/platform/glfw/assets/DefaultStyle.txt"));
 
     view->run();
 

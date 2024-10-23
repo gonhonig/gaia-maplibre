@@ -117,10 +117,10 @@ void checkCompileStatus(GLuint shader) {
 // /DEBUGGING
 
 static const GLchar *vertexShaderSource =
-    "#version 300 es\nlayout (location = 0) in vec2 a_pos; void main() { "
+    "#version 330 core\nlayout (location = 0) in vec2 a_pos; void main() { "
     "gl_Position = vec4(a_pos, 0, 1); }";
 static const GLchar *fragmentShaderSource =
-    "#version 300 es\nuniform highp vec4 fill_color; out highp vec4 fragColor; "
+    "#version 330 core\nuniform highp vec4 fill_color; out highp vec4 fragColor; "
     "void main() { fragColor = fill_color; }";
 
 class ExampleCustomLayer : mbgl::style::CustomLayerHost {

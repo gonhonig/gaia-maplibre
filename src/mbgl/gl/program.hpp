@@ -57,14 +57,14 @@ public:
 
             // Compile the shader
             std::initializer_list<const char*> vertexSource = {
-                "#version 300 es\n",
+                "#version 330 core\n",
                 programParameters.getDefinesString().c_str(),
                 additionalDefines.c_str(),
                 shaders::ShaderSource<shaders::BuiltIn::Prelude, backend>::vertex,
                 programParameters.vertexSource(gfx::Backend::Type::OpenGL).c_str()};
 
             std::initializer_list<const char*> fragmentSource = {
-                "#version 300 es\n",
+                "#version 330 core\n",
                 programParameters.getDefinesString().c_str(),
                 additionalDefines.c_str(),
                 shaders::ShaderSource<shaders::BuiltIn::Prelude, backend>::fragment,
