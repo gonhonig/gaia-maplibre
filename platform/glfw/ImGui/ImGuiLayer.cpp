@@ -6,6 +6,15 @@
 #include <backends/imgui_impl_opengl3.h>
 #include <backends/imgui_impl_glfw.h>
 #include <misc/cpp/imgui_stdlib.h>
+#include <__format/format_functions.h>
+
+#include "mbgl/map/map.hpp"
+#include "mbgl/style/layer_impl.hpp"
+#include "mbgl/style/style.hpp"
+
+namespace mbgl {
+    class Map;
+}
 
 ImGuiLayer::ImGuiLayer(GLFWwindow* window)
 {
@@ -14,7 +23,7 @@ ImGuiLayer::ImGuiLayer(GLFWwindow* window)
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;       // Enable Keyboard Controls
     //io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
     // io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
-    // io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Windows
+    io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Windows
     //io.ConfigFlags |= ImGuiConfigFlags_ViewportsNoTaskBarIcons;
     //io.ConfigFlags |= ImGuiConfigFlags_ViewportsNoMerge;
 
@@ -60,12 +69,34 @@ void ImGuiLayer::End()
     //     ImGui::RenderPlatformWindowsDefault();
     //     glfwMakeContextCurrent(backup_current_context);
     // }
+
+    ImGui::UpdatePlatformWindows();
+    ImGui::RenderPlatformWindowsDefault();
 }
 
-void ImGuiLayer::Update()
+void ImGuiLayer::Update(void* data)
 {
-    static bool open = true;
-    ImGui::ShowDemoWindow(&open);
+    const ImGuiViewport* main_viewport = ImGui::GetMainViewport();
+    ImGui::SetNextWindowPos(ImVec2(main_viewport->WorkPos.x - 300, main_viewport->WorkPos.y + 20), ImGuiCond_Once);
+    ImGui::SetNextWindowSize(ImVec2(300, 400), ImGuiCond_Once);
+    ImGui::Begin("GAIA");
+    ImGui::Text("Layers:");
+    mbgl::Map *map =static_cast<mbgl::Map*>(data);
+    for (mbgl::style::Layer *layer: map->getStyle().getLayers())
+    {
+        if (layer->isVisible)
+        {
+            layer->setVisibility(mbgl::style::VisibilityType::Visible);
+        }
+        else
+        {
+            layer->setVisibility(mbgl::style::VisibilityType::None);
+        }
+        
+        ImGui::Checkbox(layer->baseImpl.get()->id.c_str(), &(layer->isVisible));
+    }
+
+    ImGui::End();
 }
 
 bool ImGuiLayer::OnMouseClick(int button, int action, int mods)

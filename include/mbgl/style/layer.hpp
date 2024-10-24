@@ -127,6 +127,7 @@ public:
     // Visibility
     VisibilityType getVisibility() const;
     void setVisibility(VisibilityType);
+    bool isVisible = true;
 
     // Zoom range
     float getMinZoom() const;

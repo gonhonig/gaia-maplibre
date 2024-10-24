@@ -1086,6 +1086,8 @@ void GLFWView::render() {
 void GLFWView::run() {
     MLN_TRACE_FUNC();
 
+    glfwMakeContextCurrent(window);
+
     auto callback = [&] {
         MLN_TRACE_ZONE(GLFWView_runLoop_callback);
 
@@ -1105,7 +1107,7 @@ void GLFWView::run() {
 
         imguiLayer->Begin();
         render();
-        imguiLayer->Update();
+        imguiLayer->Update(map);
         imguiLayer->End();
     };
 

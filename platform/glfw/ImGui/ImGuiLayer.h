@@ -11,7 +11,7 @@ public:
     void OnDetach();
     void Begin();
     void End();
-    void Update();
+    void Update(void *data);
 
     bool OnMouseClick(int button, int action, int mods);
 
