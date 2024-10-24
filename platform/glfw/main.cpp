@@ -234,7 +234,6 @@ int main(int argc, char* argv[]) {
     map.getStyle().loadJSON(load_file("/Users/gonhonig/Projects/gaia-maplibre/platform/glfw/assets/DefaultStyle.txt"));
 
     view->run();
-
     // Save settings
     mbgl::CameraOptions camera = map.getCameraOptions();
     settings.latitude = camera.center->latitude();

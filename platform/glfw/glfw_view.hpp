@@ -9,6 +9,8 @@
 #include <utility>
 #include <optional>
 
+#include "ImGui/ImGuiLayer.h"
+
 #if (defined(MLN_RENDER_BACKEND_OPENGL) || defined(MLN_RENDER_BACKEND_VULKAN)) && \
     !defined(MBGL_LAYER_CUSTOM_DISABLE_ALL)
 #define ENABLE_LOCATION_INDICATOR
@@ -70,6 +72,7 @@ public:
     // mbgl::MapObserver implementation
     void onDidFinishLoadingStyle() override;
     void onWillStartRenderingFrame() override;
+    inline ImGuiLayer* getImGuiLayer() const {return imguiLayer;}
 
 protected:
     // mbgl::Backend implementation
@@ -168,6 +171,7 @@ private:
     std::unique_ptr<SnapshotObserver> snapshotterObserver;
     mbgl::ResourceOptions mapResourceOptions;
     mbgl::ClientOptions mapClientOptions;
+    ImGuiLayer* imguiLayer;
 
 #ifdef ENABLE_LOCATION_INDICATOR
     bool puckFollowsCameraCenter = false;

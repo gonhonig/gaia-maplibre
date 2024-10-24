@@ -6,6 +6,8 @@
 
 #include <GLFW/glfw3.h>
 
+#include "ImGui/ImGuiLayer.h"
+
 class GLFWGLRenderableResource final : public mbgl::gl::RenderableResource {
 public:
     explicit GLFWGLRenderableResource(GLFWGLBackend& backend_)

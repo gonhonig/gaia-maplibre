@@ -51,6 +51,7 @@
 #endif
 
 #define GL_GLEXT_PROTOTYPES
+
 #include <GLFW/glfw3.h>
 
 #include <cassert>
@@ -229,6 +230,7 @@ GLFWView::GLFWView(bool fullscreen_,
 #endif
 
     pixelRatio = static_cast<float>(backend->getSize().width) / width;
+    imguiLayer = new ImGuiLayer(window);
 
     glfwMakeContextCurrent(nullptr);
 
@@ -1095,12 +1097,16 @@ void GLFWView::run() {
             }
         }
 
+
         {
             MLN_TRACE_ZONE(glfwPollEvents);
             glfwPollEvents();
         }
 
+        imguiLayer->Begin();
         render();
+        imguiLayer->Update();
+        imguiLayer->End();
     };
 
     // Cap frame rate to 60hz if benchmark mode is disabled
@@ -1117,6 +1123,8 @@ void GLFWView::run() {
 #else
     runLoop.run();
 #endif
+
+    imguiLayer->OnDetach();
 }
 
 float GLFWView::getPixelRatio() const {

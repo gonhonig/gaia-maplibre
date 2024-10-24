@@ -22,6 +22,9 @@ add_executable(
     ${PROJECT_SOURCE_DIR}/platform/glfw/settings_json.cpp
     ${PROJECT_SOURCE_DIR}/platform/glfw/test_writer.cpp
     ${PROJECT_SOURCE_DIR}/platform/default/src/mbgl/map/map_snapshotter.cpp
+        ImGui/ImGuiBuild.cpp
+        ImGui/ImGuiLayer.cpp
+        ImGui/ImGuiLayer.h
 )
 
 set_property(
@@ -85,6 +88,7 @@ target_include_directories(
         ${GLFW_INCLUDE_DIRS}
         # For /platform/default/src/mbgl/map/map_snapshotter.hpp
     PRIVATE ${PROJECT_SOURCE_DIR}/src
+    PRIVATE ${PROJECT_SOURCE_DIR}/vendor/imgui
 )
 
 # Use target_link_directories when we move away from CMake 3.10.
@@ -124,6 +128,13 @@ target_link_libraries(
         Mapbox::Map
         mbgl-compiler-options
         Mapbox::Base::cheap-ruler-cpp
+)
+
+include(${PROJECT_SOURCE_DIR}/vendor/imgui.cmake)
+
+target_link_libraries(
+        mbgl-glfw
+        PRIVATE imgui
 )
 
 if(NOT WIN32 AND MLN_WITH_OPENGL)
