@@ -16,7 +16,8 @@ namespace mbgl {
     class Map;
 }
 
-ImGuiLayer::ImGuiLayer(GLFWwindow* window)
+ImGuiLayer::ImGuiLayer(GLFWwindow* window, mbgl::Map* map)
+    : m_Map(map)
 {
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
@@ -74,26 +75,28 @@ void ImGuiLayer::End()
     ImGui::RenderPlatformWindowsDefault();
 }
 
-void ImGuiLayer::Update(void* data)
+void ImGuiLayer::Update()
 {
     const ImGuiViewport* main_viewport = ImGui::GetMainViewport();
     ImGui::SetNextWindowPos(ImVec2(main_viewport->WorkPos.x - 300, main_viewport->WorkPos.y + 20), ImGuiCond_Once);
     ImGui::SetNextWindowSize(ImVec2(300, 400), ImGuiCond_Once);
     ImGui::Begin("GAIA");
-    ImGui::Text("Layers:");
-    mbgl::Map *map =static_cast<mbgl::Map*>(data);
-    for (mbgl::style::Layer *layer: map->getStyle().getLayers())
+
+    if (ImGui::CollapsingHeader("Layers"))
     {
-        if (layer->isVisible)
+        for (mbgl::style::Layer *layer: m_Map->getStyle().getLayers())
         {
-            layer->setVisibility(mbgl::style::VisibilityType::Visible);
+            if (layer->isVisible)
+            {
+                layer->setVisibility(mbgl::style::VisibilityType::Visible);
+            }
+            else
+            {
+                layer->setVisibility(mbgl::style::VisibilityType::None);
+            }
+
+            ImGui::Checkbox(layer->baseImpl.get()->id.c_str(), &(layer->isVisible));
         }
-        else
-        {
-            layer->setVisibility(mbgl::style::VisibilityType::None);
-        }
-        
-        ImGui::Checkbox(layer->baseImpl.get()->id.c_str(), &(layer->isVisible));
     }
 
     ImGui::End();

@@ -47,7 +47,9 @@ public:
 
     mbgl::gfx::RendererBackend &getRendererBackend();
 
-    void setTestDirectory(std::string dir) { testDirectory = std::move(dir); };
+    void setTestDirectory(std::string dir) { testDirectory = std::move(dir); }
+
+    void initImGui();
 
     // Callback called when the user presses the key mapped to style change.
     // The expected action is to set a new style, different to the current one.

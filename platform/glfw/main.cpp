@@ -147,6 +147,7 @@ int main(int argc, char* argv[]) {
                   clientOptions);
 
     backend.setMap(&map);
+    backend.initImGui();
 
     if (!style.empty() && style.find("://") == std::string::npos) {
         style = std::string("file://") + style;

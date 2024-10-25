@@ -230,7 +230,6 @@ GLFWView::GLFWView(bool fullscreen_,
 #endif
 
     pixelRatio = static_cast<float>(backend->getSize().width) / width;
-    imguiLayer = new ImGuiLayer(window);
 
     glfwMakeContextCurrent(nullptr);
 
@@ -1107,7 +1106,7 @@ void GLFWView::run() {
 
         imguiLayer->Begin();
         render();
-        imguiLayer->Update(map);
+        imguiLayer->Update();
         imguiLayer->End();
     };
 
@@ -1161,6 +1160,12 @@ void GLFWView::report(float duration) {
         frameTime = 0;
         lastReported = currentTime;
     }
+}
+
+void GLFWView::initImGui()
+{
+    glfwMakeContextCurrent(window);
+    imguiLayer = new ImGuiLayer(window, map);
 }
 
 void GLFWView::setChangeStyleCallback(std::function<void()> callback) {
