@@ -14,6 +14,8 @@
 #include <stdexcept>
 #include <optional>
 
+#include "gaia/enums/enums.h"
+
 namespace mbgl {
 namespace style {
 namespace expression {
@@ -108,7 +110,7 @@ struct LayerTypeInfo {
  */
 class Layer {
 public:
-    Layer(const Layer&) = delete;
+    Layer(const Layer&, Gaia::Enums::LayerType type = Gaia::Enums::LayerType::Base) = delete;
     Layer& operator=(const Layer&) = delete;
 
     virtual ~Layer();
@@ -127,7 +129,7 @@ public:
     // Visibility
     VisibilityType getVisibility() const;
     void setVisibility(VisibilityType);
-    bool isVisible = true;
+    bool m_IsVisible = true;
 
     // Zoom range
     float getMinZoom() const;
@@ -140,6 +142,8 @@ public:
 
     virtual StyleProperty getProperty(const std::string&) const = 0;
     virtual Value serialize() const;
+
+    inline Gaia::Enums::LayerType getLayerType() {return m_LayerType;}
 
     // Private implementation
     /// @cond FALSE
@@ -157,7 +161,7 @@ public:
     // peer object here, so that separately-obtained references to this object
     // share identical platform-native peers.
     mapbox::base::TypeWrapper peer;
-    Layer(Immutable<Impl>);
+    Layer(Immutable<Impl>, Gaia::Enums::LayerType type = Gaia::Enums::LayerType::Base);
 
     const LayerTypeInfo* getTypeInfo() const noexcept;
 
@@ -167,6 +171,8 @@ public:
     expression::Dependency getDependencies() const noexcept;
 
 private:
+    Gaia::Enums::LayerType m_LayerType;
+
     std::optional<conversion::Error> setVisibility(const conversion::Convertible& value);
     std::optional<conversion::Error> setMinZoom(const conversion::Convertible& value);
     std::optional<conversion::Error> setMaxZoom(const conversion::Convertible& value);

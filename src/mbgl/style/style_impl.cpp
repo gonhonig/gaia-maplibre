@@ -25,6 +25,8 @@
 #include <mbgl/util/string.hpp>
 #include <sstream>
 
+#include "gaia/enums/enums.h"
+
 namespace mbgl {
 namespace style {
 
@@ -199,7 +201,11 @@ Layer* Style::Impl::getLayer(const std::string& id) const {
     return layers.get(id);
 }
 
-Layer* Style::Impl::addLayer(std::unique_ptr<Layer> layer, const std::optional<std::string>& before) {
+std::vector<Layer *> Style::Impl::getBaseLayers() {return m_BaseLayers;}
+std::vector<Layer *> Style::Impl::getVectorLayers() {return m_VectorLayers;}
+std::vector<Layer *> Style::Impl::getImageLayers() {return m_ImageLayers;}
+
+Layer* Style::Impl::addLayer(std::unique_ptr<Layer> layer, const std::optional<std::string>& before, Gaia::Enums::LayerType type) {
     // TODO: verify source
     if (Source* source = sources.get(layer->getSourceID())) {
         if (!source->supportsLayerType(layer->baseImpl->getTypeInfo())) {
@@ -217,6 +223,20 @@ Layer* Style::Impl::addLayer(std::unique_ptr<Layer> layer, const std::optional<s
 
     layer->setObserver(this);
     Layer* result = layers.add(std::move(layer), before);
+
+    switch (result->getLayerType())
+    {
+        case Gaia::Enums::LayerType::Base:
+            m_BaseLayers.push_back(result);
+            break;
+        case Gaia::Enums::LayerType::Vector:
+            m_VectorLayers.push_back(result);
+            break;
+        case Gaia::Enums::LayerType::Image:
+            m_ImageLayers.push_back(result);
+            break;
+    }
+
     observer->onUpdate();
 
     return result;

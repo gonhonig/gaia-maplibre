@@ -230,9 +230,7 @@ int main(int argc, char* argv[]) {
         }
     }
 
-    std::string arcgis = "https://raw.githubusercontent.com/go2garret/maps/main/src/assets/json/arcgis_hybrid.json";
-    std::string osmap = "https://raw.githubusercontent.com/go2garret/maps/main/src/assets/json/openStreetMap.json";
-    map.getStyle().loadJSON(load_file("/Users/gonhonig/Projects/gaia-maplibre/platform/glfw/assets/DefaultStyle.txt"));
+    map.getStyle().loadJSON(load_file("/Users/gonhonig/Projects/gaia-maplibre/platform/glfw/assets/NewStyle.txt"));
 
     view->run();
     // Save settings

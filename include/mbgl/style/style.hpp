@@ -65,6 +65,10 @@ public:
     std::vector<Layer*> getLayers();
     std::vector<const Layer*> getLayers() const;
 
+    std::vector<Layer*> getBaseLayers();
+    std::vector<Layer*> getVectorLayers();
+    std::vector<Layer*> getImageLayers();
+
     Layer* getLayer(const std::string&);
     const Layer* getLayer(const std::string&) const;
 

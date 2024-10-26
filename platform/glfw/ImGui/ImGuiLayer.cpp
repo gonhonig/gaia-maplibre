@@ -75,6 +75,19 @@ void ImGuiLayer::End()
     ImGui::RenderPlatformWindowsDefault();
 }
 
+void ImGuiLayer::AddLayerVisibilityItem(mbgl::style::Layer *layer) {
+    if (layer->m_IsVisible)
+    {
+        layer->setVisibility(mbgl::style::VisibilityType::Visible);
+    }
+    else
+    {
+        layer->setVisibility(mbgl::style::VisibilityType::None);
+    }
+
+    ImGui::Checkbox(layer->baseImpl.get()->id.c_str(), &(layer->m_IsVisible));
+}
+
 void ImGuiLayer::Update()
 {
     const ImGuiViewport* main_viewport = ImGui::GetMainViewport();
@@ -82,20 +95,27 @@ void ImGuiLayer::Update()
     ImGui::SetNextWindowSize(ImVec2(300, 400), ImGuiCond_Once);
     ImGui::Begin("GAIA");
 
-    if (ImGui::CollapsingHeader("Layers"))
+    if (ImGui::CollapsingHeader("Base Layers"))
     {
-        for (mbgl::style::Layer *layer: m_Map->getStyle().getLayers())
+        for (mbgl::style::Layer *layer: m_Map->getStyle().getBaseLayers())
         {
-            if (layer->isVisible)
-            {
-                layer->setVisibility(mbgl::style::VisibilityType::Visible);
-            }
-            else
-            {
-                layer->setVisibility(mbgl::style::VisibilityType::None);
-            }
+            AddLayerVisibilityItem(layer);
+        }
+    }
 
-            ImGui::Checkbox(layer->baseImpl.get()->id.c_str(), &(layer->isVisible));
+    if (ImGui::CollapsingHeader("Vector Layers"))
+    {
+        for (mbgl::style::Layer *layer: m_Map->getStyle().getVectorLayers())
+        {
+            AddLayerVisibilityItem(layer);
+        }
+    }
+
+    if (ImGui::CollapsingHeader("Image Layers"))
+    {
+        for (mbgl::style::Layer *layer: m_Map->getStyle().getImageLayers())
+        {
+            AddLayerVisibilityItem(layer);
         }
     }
 

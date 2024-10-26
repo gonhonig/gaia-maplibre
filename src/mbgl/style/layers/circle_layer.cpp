@@ -14,6 +14,7 @@
 #include <mbgl/util/traits.hpp>
 
 #include <mapbox/eternal.hpp>
+#include <mapbox/vector_tile/vector_tile_config.hpp>
 
 namespace mbgl {
 namespace style {
@@ -33,11 +34,11 @@ const LayerTypeInfo* CircleLayer::Impl::staticTypeInfo() noexcept {
 
 
 CircleLayer::CircleLayer(const std::string& layerID, const std::string& sourceID)
-    : Layer(makeMutable<Impl>(layerID, sourceID)) {
+    : Layer(makeMutable<Impl>(layerID, sourceID), Gaia::Enums::LayerType::Vector) {
 }
 
 CircleLayer::CircleLayer(Immutable<Impl> impl_)
-    : Layer(std::move(impl_)) {
+    : Layer(std::move(impl_), Gaia::Enums::LayerType::Vector) {
 }
 
 CircleLayer::~CircleLayer() = default;

@@ -21,9 +21,10 @@ static_assert(mbgl::underlying_type(Tile::Kind::RasterDEM) == mbgl::underlying_t
 
 static LayerObserver nullObserver;
 
-Layer::Layer(Immutable<Impl> impl)
+Layer::Layer(Immutable<Impl> impl, Gaia::Enums::LayerType type)
     : baseImpl(std::move(impl)),
-      observer(&nullObserver) {}
+      m_LayerType(type),
+      observer(&nullObserver){}
 
 Layer::~Layer() = default;
 

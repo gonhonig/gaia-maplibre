@@ -150,6 +150,10 @@ std::vector<const Layer*> Style::getLayers() const {
     return const_cast<const Impl&>(*impl).getLayers();
 }
 
+std::vector<Layer *> Style::getBaseLayers() {return impl->getBaseLayers();}
+std::vector<Layer *> Style::getVectorLayers() {return impl->getVectorLayers();}
+std::vector<Layer *> Style::getImageLayers() {return impl->getImageLayers();}
+
 Layer* Style::getLayer(const std::string& layerID) {
     MLN_TRACE_FUNC();
 

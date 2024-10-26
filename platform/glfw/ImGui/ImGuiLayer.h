@@ -3,6 +3,8 @@
 
 #include <GLFW/glfw3.h>
 
+#include "mbgl/style/layer.hpp"
+
 namespace mbgl {
     class Map;
 }
@@ -16,10 +18,10 @@ public:
     void Begin();
     void End();
     void Update();
-
     bool OnMouseClick(int button, int action, int mods);
-
     bool OnKeyPressed(int key, int action, int mods);
+private:
+    void AddLayerVisibilityItem(mbgl::style::Layer *layer);
 private:
     mbgl::Map* m_Map;
     bool m_BlockEvents;

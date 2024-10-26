@@ -56,6 +56,7 @@ endif()
 
 add_library(
     mbgl-compiler-options INTERFACE
+        src/gaia/enums/enums.h
 )
 
 set(UBSAN_BLACKLIST ${PROJECT_SOURCE_DIR}/scripts/ubsan.blacklist)

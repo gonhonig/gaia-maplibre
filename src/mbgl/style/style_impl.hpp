@@ -23,6 +23,8 @@
 #include <vector>
 #include <unordered_map>
 
+#include "gaia/enums/enums.h"
+
 namespace mbgl {
 
 class FileSource;
@@ -63,7 +65,11 @@ public:
     std::vector<const Layer*> getLayers() const;
     Layer* getLayer(const std::string& id) const;
 
-    Layer* addLayer(std::unique_ptr<Layer>, const std::optional<std::string>& beforeLayerID = std::nullopt);
+    std::vector<Layer*> getBaseLayers();
+    std::vector<Layer*> getVectorLayers();
+    std::vector<Layer*> getImageLayers();
+
+    Layer* addLayer(std::unique_ptr<Layer>, const std::optional<std::string>& beforeLayerID = std::nullopt, Gaia::Enums::LayerType type = Gaia::Enums::LayerType::Base);
     std::unique_ptr<Layer> removeLayer(const std::string& layerID);
 
     std::string getName() const;
@@ -110,6 +116,10 @@ private:
     TransitionOptions transitionOptions;
     std::unique_ptr<Light> light;
     std::unordered_map<std::string, bool> spritesLoadingStatus;
+
+    std::vector<Layer*> m_BaseLayers;
+    std::vector<Layer*> m_VectorLayers;
+    std::vector<Layer*> m_ImageLayers;
 
     // Defaults
     std::string name;
