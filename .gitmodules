@@ -55,6 +55,6 @@
 [submodule "vendor/glslang"]
 	path = vendor/glslang
 	url = https://github.com/KhronosGroup/glslang.git
-[submodule "/Users/gonhonig/Projects/gaia-maplibre/vendor/imgui"]
-	path = /Users/gonhonig/Projects/gaia-maplibre/vendor/imgui
+[submodule "vendor/imgui"]
+	path = vendor/imgui
 	url = https://github.com/ocornut/imgui.git
